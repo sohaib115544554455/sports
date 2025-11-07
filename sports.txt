@@ -1,0 +1,184 @@
+" style="display: none;" onchange="handleVideoUpload(event)">
+     </div>
+     <div id="video-preview" class="video-preview" style="display: none;">
+      <video id="uploaded-video" controls style="width: 100%; max-height: 400px; border-radius: 8px;"></video>
+      <div class="video-info">
+       <h4 id="video-name"></h4>
+       <p id="video-details"></p>
+      </div>
+     </div>
+     <div id="analysis-progress" class="analysis-progress" style="display: none;">
+      <div class="progress-header">
+       <h3>🤖 AI Analysis in Progress</h3>
+       <p>Processing video and extracting player performance data...</p>
+      </div>
+      <div class="progress-bar">
+       <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-steps">
+       <div class="step active" id="step-1">
+        📹 Video Processing
+       </div>
+       <div class="step" id="step-2">
+        🏃 Motion Detection
+       </div>
+       <div class="step" id="step-3">
+        ⚡ Speed Calculation
+       </div>
+       <div class="step" id="step-4">
+        🎯 Accuracy Analysis
+       </div>
+       <div class="step" id="step-5">
+        ✅ Complete
+       </div>
+      </div>
+     </div>
+     <div id="analysis-results" class="analysis-results" style="display: none;">
+      <h3>📊 AI Analysis Results</h3>
+      <div class="results-summary">
+       <div class="summary-card">
+        <div class="summary-icon">
+         👥
+        </div>
+        <div class="summary-text">
+         <h4 id="players-detected">0 Players Detected</h4>
+         <p>Automatically identified in video</p>
+        </div>
+       </div>
+       <div class="summary-card">
+        <div class="summary-icon">
+         ⏱️
+        </div>
+        <div class="summary-text">
+         <h4 id="analysis-duration">0 min</h4>
+         <p>Analysis completed</p>
+        </div>
+       </div>
+       <div class="summary-card">
+        <div class="summary-icon">
+         🎯
+        </div>
+        <div class="summary-text">
+         <h4 id="accuracy-avg">0%</h4>
+         <p>Average team accuracy</p>
+        </div>
+       </div>
+      </div>
+      <div class="player-selector"><label for="player-select">Select Player to View Details:</label> <select id="player-select" onchange="showPlayerAnalysis()"> <option value="">Choose a player...</option> </select>
+      </div>
+      <div id="selected-player-analysis" class="selected-analysis" style="display: none;">
+       <div class="analysis-header">
+        <h4 id="selected-player-name">Player Analysis</h4><button class="btn btn-secondary" onclick="savePlayerData()">💾 Save to Analytics</button>
+       </div>
+       <div class="analysis-grid">
+        <div class="metric-card">
+         <div class="metric-icon">
+          ⚡
+         </div>
+         <div class="metric-content">
+          <h5>Maximum Speed</h5>
+          <div class="metric-value" id="player-max-speed">
+           0 km/h
+          </div>
+          <div class="metric-detail">
+           Peak performance during match
+          </div>
+         </div>
+        </div>
+        <div class="metric-card">
+         <div class="metric-icon">
+          📏
+         </div>
+         <div class="metric-content">
+          <h5>Total Distance</h5>
+          <div class="metric-value" id="player-total-distance">
+           0 km
+          </div>
+          <div class="metric-detail">
+           Distance covered in match
+          </div>
+         </div>
+        </div>
+        <div class="metric-card">
+         <div class="metric-icon">
+          🎯
+         </div>
+         <div class="metric-content">
+          <h5>Pass Accuracy</h5>
+          <div class="metric-value" id="player-pass-accuracy">
+           0%
+          </div>
+          <div class="metric-detail">
+           Successful passes ratio
+          </div>
+         </div>
+        </div>
+        <div class="metric-card">
+         <div class="metric-icon">
+          🏃
+         </div>
+         <div class="metric-content">
+          <h5>Average Speed</h5>
+          <div class="metric-value" id="player-avg-speed">
+           0 km/h
+          </div>
+          <div class="metric-detail">
+           Consistent pace throughout
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="heatmap-section">
+        <h5>🗺️ Player Movement Heatmap</h5>
+        <div class="heatmap-container">
+         <canvas id="heatmap-canvas" width="400" height="300"></canvas>
+         <div class="heatmap-legend"><span class="legend-item"><span class="color-box" style="background: #ff4444;"></span> High Activity</span> <span class="legend-item"><span class="color-box" style="background: #ffaa44;"></span> Medium Activity</span> <span class="legend-item"><span class="color-box" style="background: #44ff44;"></span> Low Activity</span>
+         </div>
+        </div>
+       </div>
+       <div class="ai-insights">
+        <h5>🤖 AI Performance Insights</h5>
+        <div id="ai-recommendations" class="recommendations"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div id="player-stats" class="tab-content">
+    <div class="card">
+     <h2>➕ Add Player Statistics</h2>
+     <form id="player-form" onsubmit="handlePlayerSubmit(event)">
+      <div class="form-grid">
+       <div class="form-group"><label for="player-name">Player Name</label> <input type="text" id="player-name" placeholder="Full name" required>
+       </div>
+       <div class="form-group"><label for="player-team">Team</label> <input type="text" id="player-team" placeholder="Team name" required>
+       </div>
+       <div class="form-group"><label for="player-speed">Average Speed (km/h)</label> <input type="number" id="player-speed" step="0.1" min="0" placeholder="e.g., 24.5" required>
+       </div>
+       <div class="form-group"><label for="player-distance">Distance Covered (km)</label> <input type="number" id="player-distance" step="0.1" min="0" placeholder="e.g., 8.2" required>
+       </div>
+       <div class="form-group"><label for="player-accuracy">Pass Accuracy (%)</label> <input type="number" id="player-accuracy" min="0" max="100" placeholder="e.g., 85" required>
+       </div>
+      </div>
+      <div class="form-group"><label for="player-notes">Performance Notes &amp; Suggestions</label> <textarea id="player-notes" placeholder="Add improvement suggestions, strengths, areas to work on..."></textarea>
+      </div><button type="submit" class="btn btn-secondary" id="player-submit-btn">Add Player Stats</button>
+     </form>
+    </div>
+    <div class="card">
+     <h2>📊 Player Performance Analytics</h2>
+     <div id="players-container" class="stats-grid"></div>
+    </div>
+   </div>
+   <div id="display" class="tab-content">
+    <div class="display-mode">
+     <div class="display-header">
+      <h1 id="display-title">Live Sports Dashboard</h1>
+      <p id="display-institution">Real-time Match Updates</p>
+     </div>
+     <div id="display-container" class="display-grid"></div>
+    </div>
+   </div>
+  </div>
+  <script src="sports.js"></script>
+ </body>
+</html>

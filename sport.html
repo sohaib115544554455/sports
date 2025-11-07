@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Analytics Dashboard</title>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="sports.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+
+  <style>
+    @view-transition { navigation: auto; }
+  </style>
+</head>
+
+<body>
+  <!-- Header Navigation -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <div class="logo-section">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23667eea'/%3E%3Cpath d='M30 50 L45 35 L70 35 L85 50 L70 65 L45 65 Z' fill='white'/%3E%3C/svg%3E" alt="Football Logo" class="football-logo" id="football-logo" onclick="openGameSelection()">
+        <div class="brand-text">
+          <h1 class="brand-title">Sports Analytics Dashboard</h1>
+          <p class="brand-subtitle">Professional Sports Management System</p>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#home" onclick="showHome()">Home</a>
+        <a href="#about" onclick="showAbout()">About</a>
+        <a href="#matches">Matches</a>
+        <a href="#analytics">Analytics</a>
+        <button class="nav-contact-btn">Contact</button>
+      </div>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu">
+        <a href="#" onclick="showUserProfile()">👤 User Profile</a>
+        <a href="#" onclick="showMoreSettings()">⚙️ More Settings</a>
+        <a href="#" onclick="toggleTheme()">🌓 Theme Toggle</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <!-- Left Sidebar - Panel Buttons -->
+    <div class="sidebar-panels">
+      <button class="panel-btn active" onclick="switchTab('live-scores')">
+        <span class="panel-icon">🏆</span>
+        <span class="panel-text">Live Scores</span>
+      </button>
+      <button class="panel-btn" onclick="switchTab('video-analysis')">
+        <span class="panel-icon">🎥</span>
+        <span class="panel-text">AI Video Analysis</span>
+      </button>
+      <button class="panel-btn" onclick="switchTab('player-stats')">
+        <span class="panel-icon">📊</span>
+        <span class="panel-text">Player Analytics</span>
+      </button>
+      <button class="panel-btn" onclick="switchTab('display')">
+        <span class="panel-icon">📺</span>
+        <span class="panel-text">Display Board</span>
+      </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="container">
+      <!-- Home Screen -->
+      <div id="home-screen" class="home-screen">
+        <div class="hero-section-dark">
+          <div class="hero-content-dark">
+            <div class="hero-text-dark">
+              <h1 class="hero-title-dark">SPORTS IS <span class="arrow-text">→</span> SOUL</h1>
+              <p class="hero-tagline">We're passionate about sports. Whether you're a dedicated fan, an aspiring athlete!</p>
+            </div>
+            <div class="hero-visual">
+              <div class="sports-image-placeholder">
+                <div class="sports-icon-large">⚽🏀🏈</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+          <div class="stat-item-dark">
+            <div class="stat-number">21K+</div>
+            <div class="stat-desc">Registered athletes are proudly and happily collaborating here.</div>
+          </div>
+          <div class="stat-item-dark">
+            <div class="stat-number">100+</div>
+            <div class="stat-desc">Professional coaches are available to provide the best training.</div>
+          </div>
+          <div class="stat-item-dark">
+            <div class="stat-number">14+</div>
+            <div class="stat-desc">We've earned over 14+ awards in just six years, and we're still going.</div>
+          </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievements-section">
+          <div class="achievement-card">
+            <div class="achievement-icon">🏆</div>
+            <h3>Achievements</h3>
+            <p>Best Sports Service Provider</p>
+          </div>
+          <div class="achievement-card">
+            <div class="achievement-icon">⏰</div>
+            <h3>Services</h3>
+            <p>We Are Available 24 Hours</p>
+          </div>
+        </div>
+
+        <!-- Unique Approach Section -->
+        <div class="unique-approach">
+          <div class="approach-content">
+            <h2 class="approach-title">Unique Approach For you</h2>
+            <p class="approach-text">We blend innovation with tradition, creativity with discipline, and passion with strategy. Our unique approach ensures that every athlete reaches their full potential through personalized training programs and cutting-edge analytics.</p>
+          </div>
+          <div class="approach-visual">
+            <div class="basketball-icon">🏀</div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Live Scores Tab -->
+    <div id="live-scores" class="tab-content active">
+      <div class="card">
+        <h2>➕ Add New Match</h2>
+        <form id="match-form" onsubmit="handleMatchSubmit(event)">
+          <!-- Match Details Section -->
+          <div class="form-section">
+            <h3 class="section-title">📋 Match Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="match-name">Match Name</label>
+                <input type="text" id="match-name" placeholder="e.g., Finals 2024" required>
+              </div>
+
+              <div class="form-group">
+                <label for="match-type">Match Type</label>
+                <select id="match-type" required>
+                  <option value="">Select match type</option>
+                  <option value="Friendly">Friendly</option>
+                  <option value="League">League</option>
+                  <option value="Quarter Final">Quarter Final</option>
+                  <option value="Semi Final">Semi Final</option>
+                  <option value="Final">Final</option>
+                  <option value="Cup">Cup</option>
+                  <option value="Championship">Championship</option>
+                  <option value="Exhibition">Exhibition</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="match-date">Pick match date and start time</label>
+                <input type="datetime-local" id="match-date" required>
+              </div>
+
+              <div class="form-group">
+                <label for="venue">Enter venue name</label>
+                <input type="text" id="venue" placeholder="e.g., Wembley Stadium">
+              </div>
+
+              <div class="form-group">
+                <label for="referee">Enter referee name</label>
+                <input type="text" id="referee" placeholder="e.g., John Smith">
+              </div>
+
+              <div class="form-group">
+                <label for="tournament">Enter tournament or event name</label>
+                <input type="text" id="tournament" placeholder="e.g., Premier League 2024">
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Configuration Section -->
+          <div class="form-section">
+            <h3 class="section-title">⚙️ Team Configuration</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="team-a">Team A</label>
+                <input type="text" id="team-a" placeholder="Team name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="team-b">Team B</label>
+                <input type="text" id="team-b" placeholder="Team name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="team-a-captain">Enter captain name (Team A)</label>
+                <input type="text" id="team-a-captain" placeholder="e.g., John Doe">
+              </div>
+
+              <div class="form-group">
+                <label for="team-b-captain">Enter captain name (Team B)</label>
+                <input type="text" id="team-b-captain" placeholder="e.g., Jane Smith">
+              </div>
+
+              <div class="form-group">
+                <label for="team-a-players">List player names for Team A</label>
+                <textarea id="team-a-players" placeholder="Comma separated: Player 1, Player 2, Player 3..." rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="team-b-players">List player names for Team B</label>
+                <textarea id="team-b-players" placeholder="Comma separated: Player 1, Player 2, Player 3..." rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="team-a-logo">Upload team logo or emblem (Team A)</label>
+                <input type="file" id="team-a-logo" accept="image/*" class="file-input">
+                <div id="team-a-logo-preview" class="logo-preview"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="team-b-logo">Upload team logo or emblem (Team B)</label>
+                <input type="file" id="team-b-logo" accept="image/*" class="file-input">
+                <div id="team-b-logo-preview" class="logo-preview"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jersey Colors Section -->
+          <div class="form-section">
+            <h3 class="section-title">🎨 Jersey Colors</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="jersey-color-a">Team A Jersey Color</label>
+                <div class="jersey-color-group">
+                  <input type="color" id="jersey-color-a" value="#0066cc" class="jersey-color-picker">
+                  <input type="text" id="jersey-color-a-text" placeholder="e.g., Blue (or type color name)" class="jersey-color-text">
+                </div>
+                <div class="team-preview-section">
+                  <div id="team-a-color-badge" class="preview-jersey-badge" style="background-color: #0066cc;">
+                    <span class="preview-color-dot" style="background-color: #0066cc;"></span>
+                    <span class="preview-jersey-label">Team A</span>
+                  </div>
+                  <button type="button" id="team-a-preview-btn" class="preview-team-btn" style="background-color: #0066cc; border-color: #0066cc;" disabled>
+                    <span class="preview-btn-dot" style="background-color: #0066cc;"></span>
+                    Team A Button Preview
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="jersey-color-b">Team B Jersey Color</label>
+                <div class="jersey-color-group">
+                  <input type="color" id="jersey-color-b" value="#cc0000" class="jersey-color-picker">
+                  <input type="text" id="jersey-color-b-text" placeholder="e.g., Red (or type color name)" class="jersey-color-text">
+                </div>
+                <div class="team-preview-section">
+                  <div id="team-b-color-badge" class="preview-jersey-badge" style="background-color: #cc0000;">
+                    <span class="preview-color-dot" style="background-color: #cc0000;"></span>
+                    <span class="preview-jersey-label">Team B</span>
+                  </div>
+                  <button type="button" id="team-b-preview-btn" class="preview-team-btn" style="background-color: #cc0000; border-color: #cc0000;" disabled>
+                    <span class="preview-btn-dot" style="background-color: #cc0000;"></span>
+                    Team B Button Preview
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scores & Status Section -->
+          <div class="form-section">
+            <h3 class="section-title">📊 Scores & Status</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="score-a">Team A Score</label>
+                <input type="number" id="score-a" min="0" value="0" required>
+              </div>
+
+              <div class="form-group">
+                <label for="score-b">Team B Score</label>
+                <input type="number" id="score-b" min="0" value="0" required>
+              </div>
+
+              <div class="form-group">
+                <label for="match-status">Status</label>
+                <select id="match-status" required>
+                  <option value="Live">🔴 Live</option>
+                  <option value="Upcoming">⏰ Upcoming</option>
+                  <option value="Completed">✅ Completed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="match-duration">Set match duration in minutes</label>
+                <input type="number" id="match-duration" min="1" placeholder="e.g., 90" value="90">
+              </div>
+            </div>
+          </div>
+
+          <!-- Customization Section -->
+          <div class="form-section">
+            <h3 class="section-title">🎨 Customization</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="font-style">Choose font for display text</label>
+                <select id="font-style">
+                  <option value="default">Default</option>
+                  <option value="Arial">Arial</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Impact">Impact</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="theme-color">Pick a theme color or gradient</label>
+                <input type="color" id="theme-color" value="#667eea" class="jersey-color-picker">
+              </div>
+
+              <div class="form-group">
+                <label for="button-shape">Select button shape style</label>
+                <select id="button-shape">
+                  <option value="rounded">Rounded</option>
+                  <option value="square">Square</option>
+                  <option value="capsule">Capsule</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics & Tracking Section -->
+          <div class="form-section">
+            <h3 class="section-title">📈 Analytics and Tracking</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="weather">Enter expected weather</label>
+                <select id="weather">
+                  <option value="">Select weather</option>
+                  <option value="Sunny">☀️ Sunny</option>
+                  <option value="Cloudy">☁️ Cloudy</option>
+                  <option value="Rainy">🌧️ Rainy</option>
+                  <option value="Windy">💨 Windy</option>
+                  <option value="Snowy">❄️ Snowy</option>
+                  <option value="Foggy">🌫️ Foggy</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="attendance">Enter audience count or capacity</label>
+                <input type="number" id="attendance" min="0" placeholder="e.g., 50000">
+              </div>
+
+              <div class="form-group">
+                <label for="ai-analysis-toggle">
+                  <input type="checkbox" id="ai-analysis-toggle" style="margin-right: 8px;">
+                  Enable AI-based performance tracking?
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Control & Management Section -->
+          <div class="form-section">
+            <h3 class="section-title">💾 Control & Management</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="autosave-interval">Set autosave frequency (in minutes)</label>
+                <input type="number" id="autosave-interval" min="1" max="60" value="5" placeholder="e.g., 5">
+              </div>
+
+              <div class="form-group">
+                <label for="match-visibility">Public / Private match visibility</label>
+                <select id="match-visibility">
+                  <option value="public">🌐 Public</option>
+                  <option value="private">🔒 Private</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="notifications-toggle">
+                  <input type="checkbox" id="notifications-toggle" checked style="margin-right: 8px;">
+                  Enable live update notifications?
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn" id="match-submit-btn">Add Match</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>📋 Current Matches</h2>
+        <div id="matches-container" class="scoreboard"></div>
+      </div>
+    </div>
+
+    <!-- Video Analysis Tab -->
+    <div id="video-analysis" class="tab-content">
+      <div class="card">
+        <h2>🎥 Upload Match Video for AI Analysis</h2>
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('video-file').click()">
+          <div class="upload-content text-center">
+            <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+            </svg>
+            <h3>Drop video file here or click to browse</h3>
+            <p>Supports MP4, AVI, MOV files up to 500MB</p>
+            <p class="file-info">AI will analyze player movements, speed, and accuracy automatically</p>
+          </div>
+          <input type="file" id="video-file" accept="video/*" onchange="handleVideoUpload(event)" hidden>
+        </div>
+
+        <!-- Video Preview -->
+        <div id="video-preview" class="video-preview" style="display: none;">
+          <video id="uploaded-video" controls style="width: 100%; max-width: 800px; border-radius: 8px; margin-bottom: 16px;"></video>
+          <div class="video-info">
+            <h4 id="video-name"></h4>
+            <p id="video-details"></p>
+          </div>
+        </div>
+
+        <!-- Analysis Progress -->
+        <div id="analysis-progress" class="analysis-progress" style="display: none;">
+          <div class="progress-header">
+            <h3>🤖 AI Analysis in Progress</h3>
+            <p>Analyzing player movements, speed, and performance metrics...</p>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div class="progress-steps">
+            <div id="step-1" class="step">📹 Loading Video</div>
+            <div id="step-2" class="step">👥 Detecting Players</div>
+            <div id="step-3" class="step">🏃 Tracking Movement</div>
+            <div id="step-4" class="step">📊 Calculating Stats</div>
+            <div id="step-5" class="step">✨ Generating Insights</div>
+          </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div id="analysis-results" class="analysis-results" style="display: none;">
+          <div class="results-summary">
+            <div class="summary-card">
+              <div class="summary-icon">👥</div>
+              <div class="summary-text">
+                <h4 id="players-detected">0 Players Detected</h4>
+                <p>Total players analyzed</p>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">⏱️</div>
+              <div class="summary-text">
+                <h4 id="analysis-duration">0 min</h4>
+                <p>Analysis duration</p>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">🎯</div>
+              <div class="summary-text">
+                <h4 id="accuracy-avg">0%</h4>
+                <p>Average pass accuracy</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="player-selector">
+            <label for="player-select">Select a player to view detailed analysis:</label>
+            <select id="player-select" onchange="showPlayerAnalysis()">
+              <option value="">Choose a player...</option>
+            </select>
+          </div>
+
+          <div id="selected-player-analysis" class="selected-analysis" style="display: none;">
+            <div class="analysis-header">
+              <h4 id="selected-player-name">Player Name</h4>
+              <button class="btn btn-secondary" onclick="savePlayerData()">💾 Save to Player Analytics</button>
+            </div>
+
+            <div class="analysis-grid">
+              <div class="metric-card">
+                <div class="metric-icon">⚡</div>
+                <div class="metric-content">
+                  <h5>Max Speed</h5>
+                  <div class="metric-value" id="player-max-speed">0 km/h</div>
+                  <div class="metric-detail">Peak velocity</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">🏃</div>
+                <div class="metric-content">
+                  <h5>Total Distance</h5>
+                  <div class="metric-value" id="player-total-distance">0 km</div>
+                  <div class="metric-detail">Distance covered</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-content">
+                  <h5>Pass Accuracy</h5>
+                  <div class="metric-value" id="player-pass-accuracy">0%</div>
+                  <div class="metric-detail">Successful passes</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-content">
+                  <h5>Avg Speed</h5>
+                  <div class="metric-value" id="player-avg-speed">0 km/h</div>
+                  <div class="metric-detail">Average velocity</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="heatmap-section">
+              <h5>📍 Player Movement Heatmap</h5>
+              <div class="heatmap-container">
+                <canvas id="heatmap-canvas" width="400" height="300" style="max-width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 8px;"></canvas>
+                <div class="heatmap-legend">
+                  <div class="legend-item">
+                    <div class="color-box" style="background: rgba(68, 255, 68, 0.7);"></div>
+                    <span>Low Activity</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="color-box" style="background: rgba(255, 170, 68, 0.7);"></div>
+                    <span>Medium Activity</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="color-box" style="background: rgba(255, 68, 68, 0.7);"></div>
+                    <span>High Activity</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-insights">
+              <h5>💡 AI-Generated Insights & Recommendations</h5>
+              <div class="recommendations" id="ai-recommendations">
+                <!-- AI insights will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Analytics Tab -->
+    <div id="player-stats" class="tab-content">
+      <div class="card">
+        <h2>➕ Add Player Stats</h2>
+        <form id="player-form" onsubmit="handlePlayerSubmit(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="player-name">Player Name</label>
+              <input type="text" id="player-name" placeholder="e.g., John Doe" required>
+            </div>
+
+            <div class="form-group">
+              <label for="player-team">Team</label>
+              <input type="text" id="player-team" placeholder="Team name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="player-speed">Average Speed (km/h)</label>
+              <input type="number" id="player-speed" step="0.1" min="0" placeholder="e.g., 25.5" required>
+            </div>
+
+            <div class="form-group">
+              <label for="player-distance">Distance Covered (km)</label>
+              <input type="number" id="player-distance" step="0.1" min="0" placeholder="e.g., 9.1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="player-accuracy">Pass Accuracy (%)</label>
+              <input type="number" id="player-accuracy" min="0" max="100" placeholder="e.g., 88" required>
+            </div>
+
+            <div class="form-group">
+              <label for="player-notes">Notes</label>
+              <textarea id="player-notes" placeholder="Additional notes about the player's performance"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn" id="player-submit-btn">Add Player Stats</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>📊 Player Statistics</h2>
+        <div id="players-container" class="stats-grid"></div>
+      </div>
+    </div>
+
+    <!-- Display Board Tab -->
+    <div id="display" class="tab-content">
+      <div class="card display-mode">
+        <div class="display-header">
+          <h1 id="display-title">Live Match Display</h1>
+          <p id="display-subtitle">Real-time sports updates</p>
+        </div>
+        <div id="display-container" class="display-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Selection Modal -->
+  <div id="game-selection-modal" class="game-modal">
+    <div class="game-modal-content">
+      <div class="game-header">
+        <h2>🎮 Choose a Game</h2>
+        <button class="game-close-btn" onclick="closeGameSelection()">×</button>
+      </div>
+      <div class="game-options">
+        <button class="game-option-btn" onclick="selectGame('football')">
+          <span class="game-option-icon">⚽</span>
+          <span class="game-option-title">Football Goals</span>
+          <span class="game-option-desc">Score goals in 60 seconds!</span>
+        </button>
+        <button class="game-option-btn" onclick="selectGame('tictactoe')">
+          <span class="game-option-icon">⭕</span>
+          <span class="game-option-title">Tic Tac Toe</span>
+          <span class="game-option-desc">Classic X and O game</span>
+        </button>
+        <button class="game-option-btn" onclick="selectGame('snakeladder')">
+          <span class="game-option-icon">🐍</span>
+          <span class="game-option-title">Snake & Ladder</span>
+          <span class="game-option-desc">Roll the dice and climb!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Modal Window -->
+  <div id="game-modal" class="game-modal">
+    <div class="game-modal-content">
+      <div class="game-header">
+        <h2 id="game-title">⚽ Football Game</h2>
+        <button class="game-close-btn" onclick="closeGameWindow()">×</button>
+      </div>
+      <div class="game-rules" id="game-rules">
+        <h3>How to Play:</h3>
+        <ul id="game-rules-list">
+          <li><strong>Space Bar:</strong> Kick the ball</li>
+          <li><strong>Arrow Keys:</strong> Move player (↑ ↓ ← →)</li>
+          <li><strong>Goal:</strong> Score by kicking the ball into the goal</li>
+          <li><strong>Time:</strong> 60 seconds to score as many goals as possible!</li>
+        </ul>
+      </div>
+      <div class="game-container">
+        <canvas id="game-canvas" width="600" height="400"></canvas>
+        <div class="game-stats">
+          <div class="stat-item">
+            <span class="stat-label">Score:</span>
+            <span id="game-score" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Time:</span>
+            <span id="game-time" class="stat-value">60</span>
+          </div>
+        </div>
+        <button class="game-start-btn" onclick="startGame()">Start Game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Modal -->
+  <div id="about-modal" class="game-modal">
+    <div class="game-modal-content">
+      <div class="game-header">
+        <h2>About Sports Analytics Dashboard</h2>
+        <button class="game-close-btn" onclick="closeAboutModal()">×</button>
+      </div>
+      <div class="about-content">
+        <h3>Overview</h3>
+        <p>Sports Analytics Dashboard is a comprehensive platform designed for professional sports management. We provide cutting-edge tools for tracking, analyzing, and optimizing team performance through advanced AI technology and data-driven insights.</p>
+        
+        <h3>Key Features</h3>
+        <ul>
+          <li><strong>Live Scores:</strong> Real-time match tracking and score updates</li>
+          <li><strong>AI Video Analysis:</strong> Automated player performance analysis using machine learning</li>
+          <li><strong>Player Analytics:</strong> Detailed statistics and performance metrics for individual players</li>
+          <li><strong>Display Board:</strong> Public-facing live match information</li>
+        </ul>
+        
+        <h3>Our Mission</h3>
+        <p>To empower sports organizations with the tools they need to make data-driven decisions, improve team performance, and achieve lasting success in competitive sports.</p>
+        
+        <h3>Technology</h3>
+        <p>Built with modern web technologies and AI-powered analytics, our platform ensures accuracy, reliability, and real-time performance tracking.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS File -->
+  <script src="sports.js"></script>
+</body>
+</html>
+
